@@ -110,6 +110,7 @@ class Users:
 			query[key] = value
 
 		salt = bcrypt.gensalt()
+		query.setdefault("image", "")
 		query["password"] = bcrypt.hashpw(query["password"].encode('utf-8'), salt).decode("utf-8") 
 		query["role"] = "customer"
 		del query["confirm_password"]
@@ -135,14 +136,15 @@ class Users:
 				}, 409  
 			else:
 				new_user = database["Users"].insert_one(query)
-				query["password"] = ""
-				query.setdefault("confirm_password", "")
-				del query["role"]
 				if new_user:
+					new_users = database["Users"].aggregate(pipelines)
+					new_user = list(new_users)[0]
+					new_user["password"] = ""
+					del new_user["role"]
 					return {
 						"status": True,
 						"message": "Success",
-						"data": query
+						"data": new_user
 					}, 200
 				else:
 					return {
