@@ -316,6 +316,14 @@ class Products:
 					},
 				}
 			},
+			{
+				"$project": {
+					"_id": 0,
+					"name": 1,
+					"total": 1,
+					"kind": 1,
+				}
+			},
 			{ "$sort": { "kind": 1 } }
 		]
 
@@ -324,7 +332,6 @@ class Products:
 			data = list(products)
 			newData = data.copy()
 			newData.insert(0, {
-				"_id": "0",
 				"kind": 0,
 				"name" : "All",
 				"total": sum(d['total'] for d in data)
