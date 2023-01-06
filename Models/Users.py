@@ -135,10 +135,14 @@ class Users:
 				}, 409  
 			else:
 				new_user = database["Users"].insert_one(query)
+				query["password"] = ""
+				query.setdefault("confirm_password", "")
+				del query["role"]
 				if new_user:
 					return {
 						"status": True,
 						"message": "Success",
+						"data": query
 					}, 200
 				else:
 					return {
