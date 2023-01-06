@@ -304,7 +304,7 @@ class Products:
 					"kind": {
 						"$first": "$kind"
 					},
-					"category": {
+					"name": {
 						"$first": "$NewProducts.name"
 					}
 				}
@@ -326,7 +326,7 @@ class Products:
 			newData.insert(0, {
 				"_id": "0",
 				"kind": 0,
-				"category" : "All",
+				"name" : "All",
 				"total": sum(d['total'] for d in data)
 			})
 
